@@ -1,0 +1,29 @@
+{
+  "name": "reactRemote-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/reactRemote-e2e/src",
+  "tags": [],
+  "implicitDependencies": ["reactRemote"],
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/reactRemote-e2e/cypress.config.ts",
+        "testingType": "e2e",
+        "devServerTarget": "reactRemote:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "reactRemote:serve:production"
+        },
+        "ci": {
+          "devServerTarget": "reactRemote:serve-static"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

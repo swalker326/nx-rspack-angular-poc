@@ -1,0 +1,74 @@
+{
+  "name": "reactRemote",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/reactRemote/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/rspack:rspack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "web",
+        "outputPath": "dist/apps/reactRemote",
+        "main": "apps/reactRemote/src/main.ts",
+        "tsConfig": "apps/reactRemote/tsconfig.app.json",
+        "rspackConfig": "apps/reactRemote/rspack.config.ts",
+        "assets": [
+          "apps/reactRemote/src/favicon.ico",
+          "apps/reactRemote/src/assets"
+        ]
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production",
+          "optimization": true,
+          "sourceMap": false,
+          "rspackConfig": "apps/reactRemote/rspack.config.prod.ts"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/rspack:module-federation-dev-server",
+      "options": {
+        "buildTarget": "reactRemote:build:development",
+        "port": 4201
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "buildTarget": "reactRemote:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "serve-static": {
+      "executor": "@nx/rspack:module-federation-static-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "serveTarget": "reactRemote:serve"
+      },
+      "configurations": {
+        "development": {
+          "serveTarget": "reactRemote:serve:development"
+        },
+        "production": {
+          "serveTarget": "reactRemote:serve:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/reactRemote/jest.config.ts"
+      }
+    }
+  }
+}
